@@ -1,11 +1,13 @@
-package Eclipse_testing;
+package Eclipse_testing.delB;
 
 import javax.swing.*;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Objects;
 
-public class MyButtonA extends JButton {
+public class MyButton extends JButton implements ActionListener{
 
     String text1 = "State 1";
     String text2 = "State 2";
@@ -13,7 +15,7 @@ public class MyButtonA extends JButton {
     Color color2 = Color.red;
     String currentText = text1;
     
-    public MyButtonA(String text1, String text2, Color initialColor, Color excitedColor) {
+    public MyButton(String text1, String text2, Color initialColor, Color excitedColor) {
         this.text1 = text1;
         this.text2 = text2;
         this.color1 = initialColor;
@@ -21,12 +23,6 @@ public class MyButtonA extends JButton {
         this.currentText = text1;
         this.setText(currentText);
         this.setBackground(initialColor);
-    }
-    
-
-	public void main(String []args) {
-    	this.setBackground(Color.blue);
-    	this.setText(currentText);
     }
     
     public void toggleState() {
@@ -40,5 +36,10 @@ public class MyButtonA extends JButton {
             this.currentText = text1;
         }
     }
+
+
+	public void actionPerformed(ActionEvent e) {
+		toggleState();
+	}
 
 }

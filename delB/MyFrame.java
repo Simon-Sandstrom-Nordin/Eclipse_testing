@@ -1,31 +1,19 @@
-package Eclipse_testing;
+package Eclipse_testing.delB;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MyFrameA extends JFrame implements ActionListener {
+public class MyFrame extends JFrame {
 
     static JFrame frame = new JFrame("Simon SN");
-    static MyButtonA button1 = new MyButtonA("State 1", "State 2", Color.blue, Color.red);
-    static MyButtonA button2 = new MyButtonA("State A", "State B", Color.green, Color.magenta);
+    static MyButton button1 = new MyButton("State 1", "State 2", Color.blue, Color.red);
+    static MyButton button2 = new MyButton("State A", "State B", Color.green, Color.magenta);
 
 
     public static void main(String []args) {
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button1.toggleState();
-            }
-        });
-
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button2.toggleState();
-            }
-        });
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -38,9 +26,11 @@ public class MyFrameA extends JFrame implements ActionListener {
         frame.setSize(600, 600);
         button1.setSize(100 , 80);
         button1.setLocation(80 , 180);
+        button1.addActionListener(button1);
         label.add(button1);
         button2.setSize(100 , 80);
         button2.setLocation(360 , 180);
+        button2.addActionListener(button2);
         label.add(button2);
         //frame.pack();
 
@@ -48,8 +38,4 @@ public class MyFrameA extends JFrame implements ActionListener {
         frame.setLocationRelativeTo(null);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-            // e.getSource().toggleState();
-        }
 }
