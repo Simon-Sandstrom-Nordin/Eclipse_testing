@@ -14,7 +14,12 @@ public class Square extends JButton {
 	    this.setText(Integer.toString(number));
 	}
 	
-	public void changeNumber(int number) {
-		this.setText(Integer.toString(number));
-	}
+    public void changeNumber(int number) {
+        this.number = number;
+        updateText(); // Add this line to update the text when the number changes
+    }
+
+    private void updateText() {
+        this.setText(Integer.toString(number));
+    }
 }

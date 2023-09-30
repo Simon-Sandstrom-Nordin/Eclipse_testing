@@ -12,15 +12,7 @@ public class FifteenModel implements Boardgame{
 	
 	public FifteenModel() {
 		board = new int[4][4];
-		
-		// This code places everything in numerical order
-		// int count = 1;
-		// for (int i = 0; i < 4; i++) {
-		// 	for (int j = 0; j < 4; j++) {
-		// 		board[i][j] = count ++;
-		// 	}
-		// }
-		
+
 		Integer[] numbers = new Integer[15];
         for (int i = 1; i <= 15; i++) {
             numbers[i-1] = i;
@@ -32,13 +24,11 @@ public class FifteenModel implements Boardgame{
     			if (i == j && i == 3) {
     				board[i][j] = 0;
     			} else {
-    				
     			board[i][j] = numberList.get(4 * i + j);
     			}
     		}
     	}
 		clearX = 3; clearY = 3;
-		// message = "Aschente!";
 	}
 	
 	@Override

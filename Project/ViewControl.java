@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 
 public class ViewControl extends JFrame implements ActionListener {
 
-	private JFrame frame = new JFrame();
 	private Square[][] board = new Square[8][8];
 	
 	public ViewControl (){    
