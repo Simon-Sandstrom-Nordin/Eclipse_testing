@@ -15,12 +15,15 @@ import javax.swing.JTextField;
 public class ViewControl extends JFrame implements ActionListener {
 
 	private Square[][] board = new Square[8][8];
+	private int counter = 0;
+	private int[] list_i = {0,0};
+    private int[] list_e = {0,0};
 	
 	public ViewControl (){    
 	    this.setTitle("the Retarded Intelligent Chess Board (RICB) by Simon SN");
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setLayout(new BorderLayout());
-        
+	    
 	    Icon icon = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/nomi2.png");
 	    // Icons
 	    Icon white_king = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/Project/chessPieces/white_king.png");
@@ -73,11 +76,50 @@ public class ViewControl extends JFrame implements ActionListener {
 
         this.setVisible(true);
         // this.setLocationRelativeTo(null);
-	 }
+        
+        // user does (dance? haha) moves?
+        
+        // move e2 to e4
+        // this.move(1, 4, 3, 4);
+        
+        // game loop
+        //Boolean gameInProgress = true;
+        //while (gameInProgress) {
+        //	int[] list_i = {1,3};
+        //	int[] list_e = {3,4};
+        //	this.move(list_i[0],  list_i[1], list_e[0], list_e[1]);
+        //}
+        
+	}
+	
+	private void move(int x_init, int y_init, int x_end, int y_end) {
+		board[x_end][y_end].changePiece(board[x_init][y_init].piece, board[x_init][y_init].icon);
+		// System.out.println(board[x_init][y_init].piece);
+		board[x_init][y_init].changePiece(null, null);
+		
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// not yet
+	    for (int i = 0; i < 8; i++) {	// check board for source of click
+	        for (int j = 0; j < 8; j++) {
+	            if (e.getSource() == board[i][j]) {
+	            	if (counter == 0) {
+	            		list_i[0] = i;
+	            		list_i[1] = j;
+	            	} else if (counter == 1) {
+	            		list_e[0] = i;
+	            		list_e[1] = j;
+	            		this.move(list_i[0],  list_i[1], list_e[0], list_e[1]);          		
+	            	}
+	            	//System.out.println(i);
+	            	//System.out.println(j);
+	            	// board[i][j].move(i, j); // Call move method from Boardgame
+	            }
+	        }
+	    }
+		counter++;
+		counter = counter % 2;
 	}
 	
 }

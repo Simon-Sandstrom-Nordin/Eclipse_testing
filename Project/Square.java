@@ -5,11 +5,18 @@ import javax.swing.JButton;
 
 public class Square extends JButton {
 	
-	String piece = null;	// per default
+	public String piece;
+	public Icon icon;
 	
 	public Square(String piece, Icon icon) {
 	    this.piece = piece;
+	    this.icon = icon;
 	    this.setIcon(icon);
 	}
 	
+	public void changePiece(String piece, Icon icon) {
+	    this.piece = piece;
+	    this.icon = icon;
+	    this.setIcon(icon);
+	} 
 }
