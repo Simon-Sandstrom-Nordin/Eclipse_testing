@@ -13,25 +13,29 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class ViewControl extends JFrame implements ActionListener {
 
 	private Square[][] board = new Square[8][8];
-	private int counter = 0;
+	private JTextField mess = new JTextField("Aschente! Turn 1, white to move.");
+	private int choice_counter = 0;	// for technical reasons we need to keep track of if we're choosing a piece or a destination for a piece
+	private int turn_counter = 1;
 	private int[] list_i = {0,0};
     private int[] list_e = {0,0};
     private String[] black_pieces = {"black_rook", "black_knight", "black_bishop", "black_queen", "black_king", "black_pawn"};
 	private String[] white_pieces = {"white_rook", "white_knight", "white_bishop", "white_queen", "white_king", "white_pawn"};
     private List<String> blackPiecesList = Arrays.asList(black_pieces);
     private List<String> whitePiecesList = Arrays.asList(white_pieces);
+
 	
 	public ViewControl (){    
 	    this.setTitle("the Retarded Intelligent Chess Board (RICB) by Simon SN");
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setLayout(new BorderLayout());
 	    
-	    Icon icon = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/nomi2.png");
+	    // Icon icon = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/nomi2.png");
 	    // Icons
 	    Icon white_king = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/Project/chessPieces/white_king.png");
 	    Icon white_queen = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/Project/chessPieces/white_queen.png");
@@ -51,9 +55,11 @@ public class ViewControl extends JFrame implements ActionListener {
         // this.add(label);
 
         // frame.getContentPane().setBackground(Color.black);
-        this.setSize(600, 600);
-        setLayout(new GridLayout(8, 8));
-        int buttonSize = 50; // Set the size you want
+        // this.setSize(600, 600);
+        // setLayout(new GridLayout(8, 8));
+        JPanel buttonPanel = new JPanel(new GridLayout(8, 8));
+        
+        int buttonSize = 75; // Set the size you want
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
             	// System.out.println(Integer.toString(i) + ":" + Integer.toString(j));
@@ -77,11 +83,19 @@ public class ViewControl extends JFrame implements ActionListener {
             	
                 board[i][j].setPreferredSize(new Dimension(buttonSize, buttonSize)); // Set preferred size
                 board[i][j].addActionListener(this); // Add ActionListener
-                add(board[i][j]);
+                buttonPanel.add(board[i][j]);
             }
         }
 
+        
+    	JPanel messagePanel = new JPanel(new BorderLayout());
+    	messagePanel.add(mess, BorderLayout.CENTER);
+        this.add(messagePanel, BorderLayout.NORTH);
+        this.add(buttonPanel, BorderLayout.SOUTH);
+        
+        this.pack();
         this.setVisible(true);
+        this.setLocationRelativeTo(null);
         // this.setLocationRelativeTo(null);
         
         // user does (dance? haha) moves?
@@ -111,34 +125,52 @@ public class ViewControl extends JFrame implements ActionListener {
 	    for (int i = 0; i < 8; i++) {	// check board for source of click
 	        for (int j = 0; j < 8; j++) {
 	            if (e.getSource() == board[i][j]) {
-	            	if (counter == 0) {
+	            	if (choice_counter == 0) {
 	            		//System.out.println(board[i][j].piece);
 	            		//System.out.println(board[i][j].piece == null);
 	            		//System.out.println(board[i][j].piece == "");
 	            		if (board[i][j].piece == null) {
-	            		} else {
-	            		list_i[0] = i;
-	            		list_i[1] = j;
-	            		board[i][j].setBackground(Color.orange);
-	            		counter++;
 	            		}
-	            	} else if (counter == 1) {
+	            		// Divide into two cases, depending on whether it's white or black's turn to move
+	                	if (turn_counter % 2 == 0) {	// black to move
+		            		if (blackPiecesList.contains(board[i][j].piece)) {
+			            		list_i[0] = i;
+			            		list_i[1] = j;
+			            		board[i][j].setBackground(Color.orange);
+			            		choice_counter++;
+		            		}
+	                	} else if (turn_counter % 2 == 1) // white to move
+		            		if (whitePiecesList.contains(board[i][j].piece)) {
+			            		list_i[0] = i;
+			            		list_i[1] = j;
+			            		board[i][j].setBackground(Color.orange);
+			            		choice_counter++;
+		            		}
+	                	} else {
 	            		list_e[0] = i;
 	            		list_e[1] = j;
 	            		if (isValidMove(board[list_i[0]][list_i[1]].piece, list_i[0], list_i[1], board[list_e[0]][list_e[1]].piece, list_e[0], list_e[1])) {
 		            	this.move(list_i[0],  list_i[1], list_e[0], list_e[1]);
 	            		board[list_i[0]][list_i[1]].setBackground(null);
-	            		counter++;
+	            		choice_counter++;
+	                	turn_counter += 1;
+	                	if (turn_counter % 2 == 0) {
+		                    mess.setText("Turn: " + Integer.toString(turn_counter) + ", black to move");
+	                	} else {
+	                		mess.setText("Turn: " + Integer.toString(turn_counter) + ", white to move");
+	                	}
 	            		}
 	            	}
+
 	            	//System.out.println(i);
 	            	//System.out.println(j);
 	            	// board[i][j].move(i, j); // Call move method from Boardgame
 	            }
 	        }
-	    }
-		counter = counter % 2;
+		}
+	choice_counter = choice_counter % 2;
 	}
+
 
 	private boolean isValidMove(String piece_initial, int x_i, int y_i, String piece_end, int x_e, int y_e) {
 		// It's not code repetition - it's code apartheid
@@ -151,12 +183,18 @@ public class ViewControl extends JFrame implements ActionListener {
 	    			return false;
 	    		} else if (Math.abs(y_i-y_e) > 1) {
 	    			return false;
-	    		} else if (Math.abs(x_i-x_e) == 1 && Math.abs(y_i-y_e) == 1) {
+	    		} else {
 	    			return true;
 	    		}
 	    	}
+	    	if (piece_initial == "black_knight") {
+	    		if ((Math.abs(x_i-x_e) == 1 || Math.abs(x_i-x_e) == 2) && (Math.abs(y_i-y_e) == 1 || Math.abs(y_i-y_e) == 2) && (Math.abs(x_i-x_e) != Math.abs(y_i-y_e)))  {
+	    			return true;
+	    		} else {
+	    			return false;
+	    		}
+	    	}
 	    	
-
 	    	} else {
 	    	if (whitePiecesList.contains(piece_end)) {
 	    		return false;	// friendly fire
@@ -166,8 +204,15 @@ public class ViewControl extends JFrame implements ActionListener {
 	    			return false;
 	    		} else if (Math.abs(y_i-y_e) > 1) {
 	    			return false;
-	    		} else if (Math.abs(x_i-x_e) == 1 && Math.abs(y_i-y_e) == 1) {
+	    		} else {
 	    			return true;
+	    		}
+	    	}
+	    	if (piece_initial == "white_knight") {
+	    		if ((Math.abs(x_i-x_e) == 1 || Math.abs(x_i-x_e) == 2) && (Math.abs(y_i-y_e) == 1 || Math.abs(y_i-y_e) == 2) && (Math.abs(x_i-x_e) != Math.abs(y_i-y_e)))  {
+	    			return true;
+	    		} else {
+	    			return false;
 	    		}
 	    	}
 	    }
