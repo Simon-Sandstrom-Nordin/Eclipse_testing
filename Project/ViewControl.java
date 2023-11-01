@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 public class ViewControl extends JFrame implements ActionListener {
 
 	private Square[][] board = new Square[8][8];
-	private JTextField mess = new JTextField("Aschente! Turn 1, white to move.");
+	private JTextField mess = new JTextField("Aschente! Turn 1, white to move, to cancel move: reclick chosen piece");
 	private int choice_counter = 0;	// for technical reasons we need to keep track of if we're choosing a piece or a destination for a piece
 	private int turn_counter = 1;
 	private int[] list_i = {0,0};
@@ -155,9 +155,9 @@ public class ViewControl extends JFrame implements ActionListener {
 	            		choice_counter++;
 	                	turn_counter += 1;
 	                	if (turn_counter % 2 == 0) {
-		                    mess.setText("Turn: " + Integer.toString(turn_counter) + ", black to move");
+		                    mess.setText("Turn: " + Integer.toString(turn_counter) + ", black to move, to cancel move: reclick chosen piece");
 	                	} else {
-	                		mess.setText("Turn: " + Integer.toString(turn_counter) + ", white to move");
+	                		mess.setText("Turn: " + Integer.toString(turn_counter) + ", white to move, to cancel move: reclick chosen piece");
 	                	}
 	            		}
 	            	}
@@ -173,6 +173,14 @@ public class ViewControl extends JFrame implements ActionListener {
 
 
 	private boolean isValidMove(String piece_initial, int x_i, int y_i, String piece_end, int x_e, int y_e) {
+		// cancel move if you click on the same piece
+		if (x_i == x_e && y_i == y_e) {
+			board[x_i][y_i].setBackground(null);
+			choice_counter++;
+			choice_counter = choice_counter % 2;
+		}
+		
+		
 		// It's not code repetition - it's code apartheid
 	    if (blackPiecesList.contains(piece_initial)) {
 	    	if (blackPiecesList.contains(piece_end)) {
@@ -194,7 +202,168 @@ public class ViewControl extends JFrame implements ActionListener {
 	    			return false;
 	    		}
 	    	}
+	    	if (piece_initial == "black_rook") {
+	    		if (Math.abs(x_i-x_e) == 0 || Math.abs(y_i-y_e) == 0) {	// zero in some direction
+	    			if (Math.abs(y_i-y_e) == 0) {	// move in x-direction, horizontal move
+	    				if (x_e - x_i > 0) {	// move in positive x direction
+		    				for (int x = x_i+1; x < x_e; x++) {
+		    					if (board[x][y_e].piece != null) {
+		    						return false;	// there's a piece in the way
+		    					}
+		    				}
+	    				} else if (x_e - x_i < 0) {	// move in negative x direction
+	    					for (int x = x_i-1; x > x_e; x--) {
+	    						if (board[x][y_e].piece != null) {
+	    							return false;	// there's a piece in the way
+	    						}
+	    					}
+	    				}
+	    			} else { // move in y-direction, horizontal move
+	    				if (y_e - y_i > 0) {	// move in positive y direction
+	    					for (int y = y_i+1; y < y_e; y++) {
+	    						if (board[x_e][y].piece != null) {
+	    							return false;	// there's a piece in the way
+	    						}
+	    					}
+	    				} else if (y_e - y_i < 0) {	// move in negative direction
+		    				for (int y = y_i-1; y > y_e; y--) {
+		    					if (board[x_e][y].piece != null) {
+			    					return false;	// there's a piece in the way
+			    				}
+		    				}
+	    				}
+	    			}
+	    		} else {	// move that is not strictly either vertical or horizontal
+	    			return false;
+	    		}
+	    	}
 	    	
+	    	if (piece_initial == "black_bishop") {
+	    		if (Math.abs(x_e - x_i) == Math.abs(y_e-y_i)) {	// need to be equidistant in x and y, i.e. diagonal move
+	    			if (x_e-x_i > 0 && y_e - y_i > 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i + 1, y = y_i + 1; x < x_e; x++, y++) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i > 0 && y_e - y_i < 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i + 1, y = y_i - 1; x < x_e; x++, y--) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i < 0 && y_e - y_i < 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i - 1, y = y_i - 1; x > x_e; x--, y--) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i < 0 && y_e - y_i > 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i - 1, y = y_i + 1; x > x_e; x--, y++) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			}
+	    		} else {	// move that is not diagonal
+	    			return false;
+	    		}
+	    		
+	    	}
+	    	
+	    	if (piece_initial == "black_queen") {
+	    		if (Math.abs(x_e - x_i) == Math.abs(y_e-y_i)) {	// need to be equidistant in x and y, i.e. diagonal move
+	    			if (x_e-x_i > 0 && y_e - y_i > 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i + 1, y = y_i + 1; x < x_e; x++, y++) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i > 0 && y_e - y_i < 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i + 1, y = y_i - 1; x < x_e; x++, y--) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i < 0 && y_e - y_i < 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i - 1, y = y_i - 1; x > x_e; x--, y--) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i < 0 && y_e - y_i > 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i - 1, y = y_i + 1; x > x_e; x--, y++) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			}
+	    		} else if (Math.abs(x_i-x_e) == 0 || Math.abs(y_i-y_e) == 0) {	// zero in some direction
+		    			if (Math.abs(y_i-y_e) == 0) {	// move in x-direction, horizontal move
+		    				if (x_e - x_i > 0) {	// move in positive x direction
+			    				for (int x = x_i+1; x < x_e; x++) {
+			    					if (board[x][y_e].piece != null) {
+			    						return false;	// there's a piece in the way
+			    					}
+			    				}
+		    				} else if (x_e - x_i < 0) {	// move in negative x direction
+		    					for (int x = x_i-1; x > x_e; x--) {
+		    						if (board[x][y_e].piece != null) {
+		    							return false;	// there's a piece in the way
+		    						}
+		    					}
+		    				}
+		    			} else { // move in y-direction, horizontal move
+		    				if (y_e - y_i > 0) {	// move in positive y direction
+		    					for (int y = y_i+1; y < y_e; y++) {
+		    						if (board[x_e][y].piece != null) {
+		    							return false;	// there's a piece in the way
+		    						}
+		    					}
+		    				} else if (y_e - y_i < 0) {	// move in negative direction
+			    				for (int y = y_i-1; y > y_e; y--) {
+			    					if (board[x_e][y].piece != null) {
+				    					return false;	// there's a piece in the way
+				    				}
+			    				}
+		    				}
+		    			}
+		    		} else {	// move that is not strictly either vertical or horizontal
+		    			return false;
+		    		}
+	    		}
+	    		
+	    		if (piece_initial == "black_pawn") {
+	    			// System.out.print(y_e);
+	    			// System.out.print(y_i);
+	    			// System.out.print(x_e);
+	    			// System.out.print(x_i);
+	    			// illegal moves
+	    			if (x_e == x_i || Math.abs(y_e - y_i) > 1 || x_i > x_e || (Math.abs(y_e - y_i) == 1 && whitePiecesList.contains(piece_end) == false) || x_e - x_i > 2) {
+	    				return false;
+	    			}
+	    			
+	    			// diagonal 1 step capture
+	    			else if (whitePiecesList.contains(piece_end)) {
+	    				if (x_e - x_i != 1 || Math.abs(y_e - y_i) != 1) {
+	    					return false;
+	    				}
+	    			}
+	    			// initial 2 step
+	    			else if (x_e - x_i == 2 && (Math.abs(y_e - y_i) != 0 || x_i != 1)) {
+	    				return false;
+	    			}
+	    			// normal 1 step
+	    			else if (x_e - x_i == 1 && Math.abs(y_e - y_i) != 0) {
+    					return false;
+    				}
+
+	    			
+	    			// promotion <- not required for lower grades, maybe later
+	    			// en passant <- not required :D
+	    		
+	    		}
+	    	    	
 	    	} else {
 	    	if (whitePiecesList.contains(piece_end)) {
 	    		return false;	// friendly fire
@@ -215,8 +384,167 @@ public class ViewControl extends JFrame implements ActionListener {
 	    			return false;
 	    		}
 	    	}
+	    	if (piece_initial == "white_rook") {
+	    		if (Math.abs(x_i-x_e) == 0 || Math.abs(y_i-y_e) == 0) {	// zero in some direction
+	    			if (Math.abs(y_i-y_e) == 0) {	// move in x-direction, horizontal move
+	    				if (x_e - x_i > 0) {	// move in positive x direction
+		    				for (int x = x_i + 1; x < x_e; x++) {
+		    					if (board[x][y_e].piece != null) {
+		    						return false;	// there's a piece in the way
+		    					}
+		    				}
+	    				} else if (x_e - x_i < 0) {	// move in negative x direction
+	    					for (int x = x_i - 1; x > x_e; x--) {
+	    						if (board[x][y_e].piece != null) {
+	    							return false;	// there's a piece in the way
+	    						}
+	    					}
+	    				}
+	    			} else { // move in y-direction, horizontal move
+	    				if (y_e - y_i > 0) {	// move in positive y direction
+	    					for (int y = y_i+1; y < y_e; y++) {
+	    						if (board[x_e][y].piece != null) {
+	    							return false;	// there's a piece in the way
+	    						}
+	    					}
+	    				} else if (y_e - y_i < 0) {	// move in negative direction
+		    				for (int y = y_i-1; y > y_e; y--) {
+		    					if (board[x_e][y].piece != null) {
+			    					return false;	// there's a piece in the way
+			    				}
+		    				}
+	    				}
+	    			}
+	    		} else {	// move that is not strictly either vertical or horizontal
+	    			return false;
+	    		}
+	    	}
+	    	
+	    	if (piece_initial == "white_bishop") {
+	    		if (Math.abs(x_e - x_i) == Math.abs(y_e-y_i)) {	// need to be equidistant in x and y, i.e. diagonal move
+	    			if (x_e-x_i > 0 && y_e - y_i > 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i + 1, y = y_i + 1; x < x_e; x++, y++) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i > 0 && y_e - y_i < 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i + 1, y = y_i - 1; x < x_e; x++, y--) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i < 0 && y_e - y_i < 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i - 1, y = y_i - 1; x > x_e; x--, y--) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i < 0 && y_e - y_i > 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i - 1, y = y_i + 1; x > x_e; x--, y++) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			}
+	    		} else {	// move that is not diagonal
+	    			return false;
+	    		}
+	    	}
+	    	
+	    	if (piece_initial == "white_queen") {
+	    		if (Math.abs(x_e - x_i) == Math.abs(y_e-y_i)) {	// need to be equidistant in x and y, i.e. diagonal move
+	    			if (x_e-x_i > 0 && y_e - y_i > 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i + 1, y = y_i + 1; x < x_e; x++, y++) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i > 0 && y_e - y_i < 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i + 1, y = y_i - 1; x < x_e; x++, y--) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i < 0 && y_e - y_i < 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i - 1, y = y_i - 1; x > x_e; x--, y--) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			} else if (x_e-x_i < 0 && y_e - y_i > 0) {	// move along positive x and y diagonal
+		    			for (int x = x_i - 1, y = y_i + 1; x > x_e; x--, y++) {
+		    				if (board[x][y].piece != null) {
+		    					return false;	// there's a piece in the way
+		    				}
+		    			}
+	    			}
+	    		} else if (Math.abs(x_i-x_e) == 0 || Math.abs(y_i-y_e) == 0) {	// zero in some direction
+		    			if (Math.abs(y_i-y_e) == 0) {	// move in x-direction, horizontal move
+		    				if (x_e - x_i > 0) {	// move in positive x direction
+			    				for (int x = x_i+1; x < x_e; x++) {
+			    					if (board[x][y_e].piece != null) {
+			    						return false;	// there's a piece in the way
+			    					}
+			    				}
+		    				} else if (x_e - x_i < 0) {	// move in negative x direction
+		    					for (int x = x_i-1; x > x_e; x--) {
+		    						if (board[x][y_e].piece != null) {
+		    							return false;	// there's a piece in the way
+		    						}
+		    					}
+		    				}
+		    			} else { // move in y-direction, horizontal move
+		    				if (y_e - y_i > 0) {	// move in positive y direction
+		    					for (int y = y_i+1; y < y_e; y++) {
+		    						if (board[x_e][y].piece != null) {
+		    							return false;	// there's a piece in the way
+		    						}
+		    					}
+		    				} else if (y_e - y_i < 0) {	// move in negative direction
+			    				for (int y = y_i-1; y > y_e; y--) {
+			    					if (board[x_e][y].piece != null) {
+				    					return false;	// there's a piece in the way
+				    				}
+			    				}
+		    				}
+		    			}
+		    		} else {	// move that is not strictly either vertical or horizontal
+		    			return false;
+		    		}
+	    	}
+    		if (piece_initial == "white_pawn") {
+    			// System.out.print(y_e);
+    			// System.out.print(y_i);
+    			// System.out.print(x_e);
+    			// System.out.print(x_i);
+    			// illegal moves
+    			if (x_e == x_i || Math.abs(y_e - y_i) > 1 || x_i < x_e || (Math.abs(y_e - y_i) == 1 && blackPiecesList.contains(piece_end) == false) || x_i - x_e > 2) {
+    				return false;
+    			}
+    			
+    			// diagonal 1 step capture
+    			else if (blackPiecesList.contains(piece_end)) {
+    				if (x_i - x_e != 1 || Math.abs(y_e - y_i) != 1) {
+    					return false;
+    				}
+    			}
+    			// initial 2 step
+    			else if (x_i - x_e == 2 && (Math.abs(y_e - y_i) != 0 || x_i != 6)) {
+    				return false;
+    			}
+    			// normal 1 step
+    			else if (x_i - x_e == 1 && Math.abs(y_e - y_i) != 0) {
+					return false;
+				}
+
+    			
+    			// promotion <- not required for lower grades, maybe later
+    			// en passant <- not required :D
+    		
+    		}
+	    		
 	    }
-	    
 	    return true;
 	}
 
