@@ -8,7 +8,7 @@ public class MyFrame extends JFrame{
     MyButton button1 = new MyButton(Color.black, Color.white, "svart", "vit");
     MyButton button2 = new MyButton(Color.red, Color.blue, "röd", "blå");
     public MyFrame() {
-        setTitle("Love");
+        setTitle("Simon SN & Love N");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(500, 400);
         setLayout(new GridLayout(0, 2));
