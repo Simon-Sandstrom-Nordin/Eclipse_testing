@@ -51,7 +51,7 @@ public class FifteenModel implements Boardgame{
 			message = "Move performed.";
 			return true;
 		} else {
-			message = "Move invalid. Plz choose adjacent tile. Fkn idiot.";
+			message = "Move invalid. Plz choose adjacent tile.";
 			return false;
 		}
 	}
