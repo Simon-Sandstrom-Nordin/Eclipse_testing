@@ -6,13 +6,11 @@ import java.util.List;
 
 public class FifteenModel implements Boardgame{
 
-	private int[][] board;
+	private int[][] board = new int[4][4];;
 	private int clearX, clearY;
 	private String message;
 	
 	public FifteenModel() {
-		board = new int[4][4];
-
 		Integer[] numbers = new Integer[15];
         for (int i = 1; i <= 15; i++) {
             numbers[i-1] = i;

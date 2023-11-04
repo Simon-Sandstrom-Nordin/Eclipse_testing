@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 public class Ear implements ActionListener {
 	MyButton button;
-
+	
 	public Ear(MyButton button) {
         this.button = button;
         this.button.addActionListener(new ActionListener() {
