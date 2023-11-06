@@ -1,4 +1,4 @@
-package Eclipse_testing.labb2X;
+package Eclipse_testing.labb2_update;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

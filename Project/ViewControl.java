@@ -113,11 +113,30 @@ public class ViewControl extends JFrame implements ActionListener {
         
 	}
 	
+	// helper function to mark valid destination tiles
+	private void mark(int x_init, int y_init) {
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				if (isValidMove(board[x_init][y_init].piece, x_init, y_init, board[x][y].piece, x, y)) {
+	        		board[x][y].setBackground(Color.red);
+				}
+			}
+		}
+		board[x_init][y_init].setBackground(Color.orange);
+	}
+	
+	private void unMark() {
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+	        	board[x][y].setBackground(null);
+			}
+		}
+	}
+	
 	private void move(int x_init, int y_init, int x_end, int y_end) {
 		board[x_end][y_end].changePiece(board[x_init][y_init].piece, board[x_init][y_init].icon);
 		// System.out.println(board[x_init][y_init].piece);
 		board[x_init][y_init].changePiece(null, null);
-		
 	}
 	
 	@Override
@@ -129,14 +148,14 @@ public class ViewControl extends JFrame implements ActionListener {
 	            		//System.out.println(board[i][j].piece);
 	            		//System.out.println(board[i][j].piece == null);
 	            		//System.out.println(board[i][j].piece == "");
-	            		if (board[i][j].piece == null) {
-	            		}
+	            		
 	            		// Divide into two cases, depending on whether it's white or black's turn to move
 	                	if (turn_counter % 2 == 0) {	// black to move
 		            		if (blackPiecesList.contains(board[i][j].piece)) {
 			            		list_i[0] = i;
 			            		list_i[1] = j;
 			            		board[i][j].setBackground(Color.orange);
+			            		mark(i, j);
 			            		choice_counter++;
 		            		}
 	                	} else if (turn_counter % 2 == 1) // white to move
@@ -144,14 +163,22 @@ public class ViewControl extends JFrame implements ActionListener {
 			            		list_i[0] = i;
 			            		list_i[1] = j;
 			            		board[i][j].setBackground(Color.orange);
+			            		mark(i, j);
 			            		choice_counter++;
 		            		}
 	                	} else {
 	            		list_e[0] = i;
 	            		list_e[1] = j;
+	            		
+	            		// cancel move if you click on the same piece
+	            		if (list_i[0] == list_e[0] && list_i[1] == list_e[1]) {
+	                    	unMark();
+	            			choice_counter++;
+	            			choice_counter = choice_counter % 2;
+	            		}
 	            		if (isValidMove(board[list_i[0]][list_i[1]].piece, list_i[0], list_i[1], board[list_e[0]][list_e[1]].piece, list_e[0], list_e[1])) {
 		            	this.move(list_i[0],  list_i[1], list_e[0], list_e[1]);
-	            		board[list_i[0]][list_i[1]].setBackground(null);
+		            	unMark();
 	            		choice_counter++;
 	                	turn_counter += 1;
 	                	if (turn_counter % 2 == 0) {
@@ -173,14 +200,7 @@ public class ViewControl extends JFrame implements ActionListener {
 
 
 	private boolean isValidMove(String piece_initial, int x_i, int y_i, String piece_end, int x_e, int y_e) {
-		// cancel move if you click on the same piece
-		if (x_i == x_e && y_i == y_e) {
-			board[x_i][y_i].setBackground(null);
-			choice_counter++;
-			choice_counter = choice_counter % 2;
-		}
-		
-		
+				
 		// It's not code repetition - it's code apartheid
 	    if (blackPiecesList.contains(piece_initial)) {
 	    	if (blackPiecesList.contains(piece_end)) {
@@ -350,7 +370,7 @@ public class ViewControl extends JFrame implements ActionListener {
 	    				}
 	    			}
 	    			// initial 2 step
-	    			else if (x_e - x_i == 2 && (Math.abs(y_e - y_i) != 0 || x_i != 1)) {
+	    			else if (x_e - x_i == 2 && (Math.abs(y_e - y_i) != 0 || x_i != 1  || board[x_e-1][y_e].piece != null)) {
 	    				return false;
 	    			}
 	    			// normal 1 step
@@ -530,7 +550,7 @@ public class ViewControl extends JFrame implements ActionListener {
     				}
     			}
     			// initial 2 step
-    			else if (x_i - x_e == 2 && (Math.abs(y_e - y_i) != 0 || x_i != 6)) {
+    			else if (x_i - x_e == 2 && (Math.abs(y_e - y_i) != 0 || x_i != 6 || board[x_e+1][y_e].piece != null)) {
     				return false;
     			}
     			// normal 1 step

@@ -1,4 +1,4 @@
-package Eclipse_testing.labb2X;
+package Eclipse_testing.labb2_update;
 
 import javax.swing.JButton;
 

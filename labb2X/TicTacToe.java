@@ -11,6 +11,8 @@ public class TicTacToe implements Boardgame {
 	private String message;
 	private int turn_counter = 0;
 	private int move_counter = 0;	// to assist with moving pieces
+	private int previous_x = 0;
+	private int previous_y = 0;	// for move phase
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -41,7 +43,8 @@ public class TicTacToe implements Boardgame {
 			if (turn_counter % 2 == 0) {
 				if (move_counter % 2 == 0) {	// remove before replacing
 					if (board[x][y] == 1) {
-							board[x][y] = 0;
+							previous_x = x;
+							previous_y = y;
 							message = "Player 1's turn, please select new location";
 							move_counter += 1;
 							return true;
@@ -51,6 +54,7 @@ public class TicTacToe implements Boardgame {
 						}
 					} else {
 						if (board[x][y] == 0) {
+							board[previous_x][previous_y] = 0;
 							board[x][y] = 1;
 							message = "Player 2's turn";
 							move_counter = 0;
@@ -64,7 +68,8 @@ public class TicTacToe implements Boardgame {
 			} else {
 				if (move_counter % 2 == 0) {	// remove before replacing
 					if (board[x][y] == 2) {
-							board[x][y] = 0;
+							previous_x = x;
+							previous_y = y;
 							message = "Player 2's turn, please select new location";
 							move_counter += 1;
 							return true;
@@ -74,6 +79,7 @@ public class TicTacToe implements Boardgame {
 						}
 					} else {
 						if (board[x][y] == 0) {
+							board[previous_x][previous_y] = 0;
 							board[x][y] = 2;
 							message = "Player 1's turn";
 							move_counter = 0;
@@ -91,11 +97,11 @@ public class TicTacToe implements Boardgame {
 	@Override
 	public String getStatus(int x, int y) {
 		if (board[x][y] == 0) {
-			return "0";
+			return "";
 		} else if (board[x][y] == 1) {
-			return "1";
+			return "X";
 		} else {
-			return "2";
+			return "O";
 		}
 
 	}
