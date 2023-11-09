@@ -18,7 +18,7 @@ public class ViewControl extends JFrame implements ActionListener {
 	private Boardgame game;
 	private int size;
 	private Square[][] board;
-	private JTextField mess = new JTextField("Aschente!");
+	private JTextField mess = new JTextField();
 	int buttonSize = 80;
 	
 	public ViewControl (Boardgame game, int n){
@@ -50,9 +50,8 @@ public class ViewControl extends JFrame implements ActionListener {
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         
-	 }
+	}
 	
-
 	private void update() {
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
