@@ -1,8 +1,5 @@
 package Eclipse_testing.labb2_update;
 
-// Read more on Mock-Objects...
-// import static org.mockito.Mockito.mock;
-
 public class TicTacToeMock implements Boardgame {
 
 	public static void main(String[] args) {
