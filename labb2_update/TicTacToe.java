@@ -11,11 +11,6 @@ public class TicTacToe implements Boardgame {
 	private int move_counter = 0;	// to assist with moving pieces
 	private int previous_x = 0;
 	private int previous_y = 0;	// for move phase
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public Boolean move(int x, int y) {
