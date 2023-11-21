@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-class Gameboard extends JPanel {
+class Gameboard extends JPanel implements ActionListener {
 
     private Icon[] icons = {new ImageIcon("C:\\Users\\manip\\eclipse-workspace\\Eclipse_testing\\src\\Eclipse_testing\\labb3\\rock.gif"), 
     new ImageIcon("C:\\Users\\manip\\eclipse-workspace\\Eclipse_testing\\src\\Eclipse_testing\\labb3\\paper.gif"),
@@ -17,8 +17,9 @@ class Gameboard extends JPanel {
     private String[] texts = {"STEN", "PASE", "SAX"};
     private JLabel upperMess, lowerMess, scorelabel;
     private int score;
+    private int counter; // To count ONE ... TWO  and on THREE you play
     private Color bgcolor;
-    private HashMap<String,JButton> map = new HashMap<String,JButton>();
+    private HashMap<JButton,String> map = new HashMap<JButton,String>();
 
 
     // Constructor that builds the board, used for computers board
@@ -48,7 +49,7 @@ class Gameboard extends JPanel {
     	    add(buttons[i]);
     		// Store each button in a map with its text as key. 
             // Enables us to retrieve the button from a textvalue. 
-    		map.put(texts[i],buttons[i]);
+    		map.put(buttons[i], texts[i]);
     	}
 
     	add(lower); // added after buttons
@@ -69,11 +70,6 @@ class Gameboard extends JPanel {
     	lowerMess.setText(r);
     }
 
-    // remember last chosen JButton and mark it yellow
-    void markPlayed(String r) {
-    	lastPlayed = map.get(r); 
-    	lastPlayed.setBackground(Color.yellow);
-    }
 
     // or use JButton as parameter
     void markPlayed(JButton b) {
@@ -86,5 +82,17 @@ class Gameboard extends JPanel {
     	score++;
     	scorelabel.setText("Score: " + score);
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// JButton pressedButton = 
+		if (counter < 2) {
+			counter += 1;
+		} else {
+			String userMove = map.get(e.getSource());
+			
+			counter = 0;
+		}
+	}
 
 }

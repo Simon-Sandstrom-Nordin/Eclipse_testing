@@ -9,13 +9,12 @@ import java.util.*;
 
 class RPSSkel extends JFrame implements ActionListener {
     Gameboard myboard, computersboard;
-    int counter; // To count ONE ... TWO  and on THREE you play
     Socket socket;
     BufferedReader in;
     PrintWriter out;
     JButton closebutton;
 
-    RPSSkel(Client clientObj) {
+    RPSSkel() {
     	setDefaultCloseOperation(EXIT_ON_CLOSE);
     	closebutton = new JButton("Close");
     	myboard = new Gameboard("Myself", this); // Must be changed
@@ -28,6 +27,7 @@ class RPSSkel extends JFrame implements ActionListener {
     	add(closebutton, BorderLayout.SOUTH);
     	setSize(350, 650);
     	setVisible(true);
+		Client clientObj = new Client();
     }
 
 	@Override
