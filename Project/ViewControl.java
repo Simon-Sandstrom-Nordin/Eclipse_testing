@@ -198,10 +198,10 @@ public class ViewControl extends JFrame implements ActionListener {
 	choice_counter = choice_counter % 2;
 	}
 
-
+	// It's not code repetition - it's code apartheid
 	private boolean isValidMove(String piece_initial, int x_i, int y_i, String piece_end, int x_e, int y_e) {
 				
-		// It's not code repetition - it's code apartheid
+		
 	    if (blackPiecesList.contains(piece_initial)) {
 	    	if (blackPiecesList.contains(piece_end)) {
 	    		return false;	// friendly fire
