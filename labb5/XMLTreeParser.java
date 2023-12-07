@@ -7,20 +7,18 @@ import java.io.*;
 
 public class XMLTreeParser {
 
-	public static DefaultMutableTreeNode parseXML() {	// alternate constructor if no argument is passed
-		String fileName = "Liv.xml";
+	public static DefaultMutableTreeNode parseXML() {
+		String fileName = "Liv.xml";	// default file name, if no argument is passed
 		return parseXML(fileName);
 	}
 	
     public static DefaultMutableTreeNode parseXML(String fileName) {
        
         try {
-            File xmlFile = new File("src/Eclipse_testing/labb5/" + fileName); // Adjust the path accordingly
-            
+            File xmlFile = new File("src/Eclipse_testing/labb5/" + fileName);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(xmlFile);
-
             DefaultMutableTreeNode root = parseXML(doc.getDocumentElement());
             return root;
         } catch (Exception e) {
@@ -28,40 +26,62 @@ public class XMLTreeParser {
             return null;
         }
 
-    }	// fråga inte varför inte alla kommentarer e på svenska <3
+    }
 
-    private static DefaultMutableTreeNode parseXML(Element element) {	// "Element"? Är ej familjär med org.w3c.dom modulen...
+    public static DefaultMutableTreeNode parseXML(Element element) {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(getNodeDetails(element));
-
         NodeList children = element.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);	// item har med hur Nodelist är dokumenterad...
+            Node child = children.item(i);
             if (child.getNodeType() == Node.ELEMENT_NODE) {
-                DefaultMutableTreeNode childNode = parseXML((Element) child);	// den funkar, men förstår ej... rekursion
-                node.add(childNode);	// lägger rekursivt in alla childnodes
+                DefaultMutableTreeNode childNode = parseXML((Element) child);
+                node.add(childNode);
             }
         }
-
         return node;
     }
 
-    protected static NodeDetails getNodeDetails(Element element) {
-        String name = element.getAttribute("namn");
-        String text = element.getTextContent().trim();
-
-        return new NodeDetails(name, text);
+    private static String getFirstLineTextContent(Element element) {
+        String textContent = element.getTextContent().trim();
+        String[] lines = textContent.split("\n");
+        if (lines.length > 0) {
+            return lines[0].trim();
+        } else {
+            return textContent;
+        }
     }
 
-    static class NodeDetails {
+    public static NodeDetails getNodeDetails(Element element) {
+    	String level = element.getNodeName();
+        String name = element.getAttribute("namn");
+        String text = getFirstLineTextContent(element).trim();
+        
+        return new NodeDetails(level, name, text);
+    }
+
+    public static class NodeDetails {
+    	String level;
         String name;
         String text;
-
-        NodeDetails(String name, String text) {
-            this.name = name;
+        
+        @Override
+        public String toString() {
+        	return getName();
+        }
+        
+        private String getName() {
+        	return name;
+        }
+        
+        public String getInfo() {
+        	return level + ": " + name + " " + text;
+        }
+        
+        NodeDetails(String level, String name, String text) {
+        	this.level = level;
+        	this.name = name;
             this.text = text;
         }
     }
     
 }
-
-// ... ja alltså strukturn blev ok, men infon blev heybaberiba. 
