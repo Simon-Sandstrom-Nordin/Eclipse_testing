@@ -4,10 +4,10 @@ public abstract class Human {
 	public String name;
 	public String gender;
 	
-    protected Human() {}
+    Human() {}
 	
 	// factory method
-	public static Human create (String inputName, String pnr) {
+	final public static Human create (String inputName, String pnr) {
 		Human humanObject;
 		if (pnr.charAt(9) == '0') {
 			humanObject = new Nonbinary();

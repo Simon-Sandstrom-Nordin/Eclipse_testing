@@ -3,6 +3,12 @@ package Eclipse_testing.labb3;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 import javax.swing.*;
 
 class Gameboard extends JPanel implements ActionListener {
@@ -20,6 +26,7 @@ class Gameboard extends JPanel implements ActionListener {
     private int counter; // To count ONE ... TWO  and on THREE you play
     private Color bgcolor;
     private HashMap<JButton,String> map = new HashMap<JButton,String>();
+    private HashMap<String, JButton> mapInverse = new HashMap<String, JButton>();
 
 
     // Constructor that builds the board, used for computers board
@@ -45,11 +52,13 @@ class Gameboard extends JPanel implements ActionListener {
     	    buttons[i] = new JButton(texts[i], icons[i]);
     	    buttons[i].setIcon(icons[i]);
     	    buttons[i].setActionCommand(texts[i]);
-    	    buttons[i].addActionListener(listener);
+    	    // buttons[i].addActionListener(listener);
+    	    buttons[i].addActionListener(this); // Ensure "this" is the ActionListener
     	    add(buttons[i]);
     		// Store each button in a map with its text as key. 
             // Enables us to retrieve the button from a textvalue. 
     		map.put(buttons[i], texts[i]);
+    		mapInverse.put(texts[i],  buttons[i]);
     	}
 
     	add(lower); // added after buttons
@@ -85,14 +94,30 @@ class Gameboard extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// JButton pressedButton = 
+		System.out.println(map.get(e.getSource()));
+		JButton pressedButton = (JButton) e.getSource();
 		if (counter < 2) {
 			counter += 1;
 		} else {
-			String userMove = map.get(e.getSource());
-			
-			counter = 0;
+			try (Socket socket = new Socket("localhost", 4713)) {
+				markPlayed(pressedButton);
+				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				PrintWriter ut = new PrintWriter(socket.getOutputStream());
+				String userMove = map.get(e.getSource());
+				ut.println(userMove);
+				ut.flush();
+				resetColor();
+				String computerMove = in.readLine();
+				markPlayed(mapInverse.get(computerMove));
+				System.out.println("My move is " + userMove);
+				System.out.println("Computer move is " + computerMove);
+				counter = 0;
+		} catch(IOException e1) {
+			System.err.println(e1);
 		}
+		}
+
+		
 	}
 
 }

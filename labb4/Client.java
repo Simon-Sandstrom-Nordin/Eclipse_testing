@@ -66,7 +66,7 @@ public class Client {
 		// Replace, then try to get toothbrush from bags
 		// bigBag.Add(toothBrush);
 		// System.out.println(suitcase.GetChild(toothBrush));
-		// System.out.println(smallBag.GetChild(toothBrush));
+		// System.o+ut.println(smallBag.GetChild(toothBrush));
 		// System.out.println(bigBag.GetChild(toothBrush));
 		
 	}

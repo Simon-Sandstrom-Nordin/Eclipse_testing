@@ -31,11 +31,10 @@ public class ViewControl extends JFrame implements ActionListener {
 
 	
 	public ViewControl (){    
-	    this.setTitle("the Retarded Intelligent Chess Board (RICB) by Simon SN");
+	    this.setTitle("the Intelligent Chess Board (ICB) by Simon SN");
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setLayout(new BorderLayout());
 	    
-	    // Icon icon = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/nomi2.png");
 	    // Icons
 	    Icon white_king = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/Project/chessPieces/white_king.png");
 	    Icon white_queen = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/Project/chessPieces/white_queen.png");
@@ -50,19 +49,11 @@ public class ViewControl extends JFrame implements ActionListener {
 	    Icon black_knight = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/Project/chessPieces/black_knight.png");
 	    Icon black_pawn = new ImageIcon("C:/Users/manip/eclipse-workspace/Eclipse_testing/src/Eclipse_testing/Project/chessPieces/black_pawn.png");
 	    
-	    // JLabel label = new JLabel(icon);
-        
-        // this.add(label);
-
-        // frame.getContentPane().setBackground(Color.black);
-        // this.setSize(600, 600);
-        // setLayout(new GridLayout(8, 8));
         JPanel buttonPanel = new JPanel(new GridLayout(8, 8));
         
-        int buttonSize = 75; // Set the size you want
+        int buttonSize = 75;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-            	// System.out.println(Integer.toString(i) + ":" + Integer.toString(j));
             	if (i == 0) {
             		if (j == 0 || j == 7) {board[i][j] = new Square("black_rook", black_rook);}
             		if (j == 1 || j == 6) {board[i][j] = new Square("black_knight", black_knight);}
@@ -96,20 +87,6 @@ public class ViewControl extends JFrame implements ActionListener {
         this.pack();
         this.setVisible(true);
         this.setLocationRelativeTo(null);
-        // this.setLocationRelativeTo(null);
-        
-        // user does (dance? haha) moves?
-        
-        // move e2 to e4
-        // this.move(1, 4, 3, 4);
-        
-        // game loop
-        //Boolean gameInProgress = true;
-        //while (gameInProgress) {
-        //	int[] list_i = {1,3};
-        //	int[] list_e = {3,4};
-        //	this.move(list_i[0],  list_i[1], list_e[0], list_e[1]);
-        //}
         
 	}
 	
@@ -145,10 +122,7 @@ public class ViewControl extends JFrame implements ActionListener {
 	        for (int j = 0; j < 8; j++) {
 	            if (e.getSource() == board[i][j]) {
 	            	if (choice_counter == 0) {
-	            		//System.out.println(board[i][j].piece);
-	            		//System.out.println(board[i][j].piece == null);
-	            		//System.out.println(board[i][j].piece == "");
-	            		
+
 	            		// Divide into two cases, depending on whether it's white or black's turn to move
 	                	if (turn_counter % 2 == 0) {	// black to move
 		            		if (blackPiecesList.contains(board[i][j].piece)) {
@@ -189,16 +163,12 @@ public class ViewControl extends JFrame implements ActionListener {
 	            		}
 	            	}
 
-	            	//System.out.println(i);
-	            	//System.out.println(j);
-	            	// board[i][j].move(i, j); // Call move method from Boardgame
 	            }
 	        }
 		}
 	choice_counter = choice_counter % 2;
 	}
 
-	// It's not code repetition - it's code apartheid
 	private boolean isValidMove(String piece_initial, int x_i, int y_i, String piece_end, int x_e, int y_e) {
 				
 		
@@ -354,10 +324,7 @@ public class ViewControl extends JFrame implements ActionListener {
 	    		}
 	    		
 	    		if (piece_initial == "black_pawn") {
-	    			// System.out.print(y_e);
-	    			// System.out.print(y_i);
-	    			// System.out.print(x_e);
-	    			// System.out.print(x_i);
+
 	    			// illegal moves
 	    			if (x_e == x_i || Math.abs(y_e - y_i) > 1 || x_i > x_e || (Math.abs(y_e - y_i) == 1 && whitePiecesList.contains(piece_end) == false) || x_e - x_i > 2) {
 	    				return false;
@@ -378,9 +345,6 @@ public class ViewControl extends JFrame implements ActionListener {
     					return false;
     				}
 
-	    			
-	    			// promotion <- not required for lower grades, maybe later
-	    			// en passant <- not required :D
 	    		
 	    		}
 	    	    	
@@ -534,11 +498,6 @@ public class ViewControl extends JFrame implements ActionListener {
 		    		}
 	    	}
     		if (piece_initial == "white_pawn") {
-    			// System.out.print(y_e);
-    			// System.out.print(y_i);
-    			// System.out.print(x_e);
-    			// System.out.print(x_i);
-    			// illegal moves
     			if (x_e == x_i || Math.abs(y_e - y_i) > 1 || x_i < x_e || (Math.abs(y_e - y_i) == 1 && blackPiecesList.contains(piece_end) == false) || x_i - x_e > 2) {
     				return false;
     			}
@@ -558,9 +517,6 @@ public class ViewControl extends JFrame implements ActionListener {
 					return false;
 				}
 
-    			
-    			// promotion <- not required for lower grades, maybe later
-    			// en passant <- not required :D
     		
     		}
 	    		

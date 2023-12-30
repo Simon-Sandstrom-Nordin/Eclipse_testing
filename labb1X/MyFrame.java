@@ -6,7 +6,6 @@ import java.awt.event.*;
 import Eclipse_testing.labb1X.MyButton;
 
 
-
 public class MyFrame extends JFrame implements ActionListener{
 	MyButton[] buttonArray;
     

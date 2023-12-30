@@ -23,7 +23,7 @@ public class MyButton extends JButton {
     }
     
     public void toggleState() {
-        if(this.state == 1) {
+        if (this.state == 1) {
             this.setBackground(color2);
             this.setText(text2);
             this.state = 2;

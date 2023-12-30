@@ -18,23 +18,15 @@ public class MyFrame extends JFrame implements ActionListener {
         setLayout(new GridLayout(0, 2));
         add(button1);
         add(button2);
-        setVisible(true);
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button1.toggleState();
-            }
-        });
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button2.toggleState();
-            }
-        });
+
+        button1.addActionListener(this);
+        button2.addActionListener(this);
     }
 
 	@Override
-	public void actionPerformed(ActionEvent e) {}
+	public void actionPerformed(ActionEvent e) {
+		((MyButton) e.getSource()).toggleState();
+	}
 
     public static void main(String[] args) {
         MyFrame frame = new MyFrame();

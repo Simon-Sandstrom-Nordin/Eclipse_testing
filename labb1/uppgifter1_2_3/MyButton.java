@@ -1,17 +1,15 @@
-package Eclipse_testing.labb_1_love_simon.del_c;
+package Eclipse_testing.labb1.uppgifter1_2_3;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MyButton extends JButton{
+public class MyButton extends JButton implements ActionListener {
     Color color1 = Color.BLACK;
     Color color2 = Color.WHITE;
     String text1 = "1";
     String text2 = "2";
-    Ear ear = new Ear(this);
     int state = 1;
     public MyButton (Color color1, Color color2, String text1, String text2) {
         this.color1 = color1;
@@ -34,5 +32,9 @@ public class MyButton extends JButton{
             this.state = 1;
         }
     }
-
+    
+    public void actionPerformed(ActionEvent e) {
+        toggleState();
+    }
 }
+

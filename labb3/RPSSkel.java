@@ -18,7 +18,12 @@ class RPSSkel extends JFrame implements ActionListener {
     	setDefaultCloseOperation(EXIT_ON_CLOSE);
     	closebutton = new JButton("Close");
     	myboard = new Gameboard("Myself", this); // Must be changed
-    	computersboard = new Gameboard("Computer", this);
+    	computersboard = new Gameboard("Computer", this) {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			//
+    		}
+    	};
     	JPanel boards = new JPanel();
     	boards.setLayout(new GridLayout(1,2));
     	boards.add(myboard);
