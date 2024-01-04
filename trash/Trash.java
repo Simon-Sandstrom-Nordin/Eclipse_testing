@@ -1,3 +1,5 @@
+/*
+
 package Eclipse_testing.trash;
 
 public class Trash {
@@ -88,3 +90,4 @@ import Eclipse_testing.labb5.XMLTreeParser;
 	// nu ser detaljerna nästan ok ut... TreePath of Treeframe och ... e krångliga
 
 }
+*/
