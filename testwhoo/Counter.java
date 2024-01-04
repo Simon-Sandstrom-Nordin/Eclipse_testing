@@ -1,0 +1,14 @@
+package Eclipse_testing.testwhoo;
+
+public class Counter {
+    private int count = 0;
+
+    public void increment() {
+        count++;
+    }
+
+    public synchronized int getCount() {
+        return count;
+    }
+}
+
