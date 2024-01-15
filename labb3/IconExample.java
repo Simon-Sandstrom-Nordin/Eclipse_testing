@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class IconExample {
     public static void main(String[] args) {
-        // Load the icon from a file (replace "path_to_your_icon.png" with the actual file path)
+        // Load the icon from a file
         ImageIcon icon = new ImageIcon("C:\\Users\\manip\\eclipse-workspace\\Eclipse_testing\\src\\Eclipse_testing\\labb3\\paper.gif");
 
         // Create a JLabel to display the icon

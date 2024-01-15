@@ -35,21 +35,21 @@ public class TestFactory {
 		
 		// try do do illegal things:
 		// create an object of an anonymous subclass of human
-		//try {
+	    //try {
 		//	Human h = new Human(){};
-		//	System.out.println("object illegally created");
+		//    System.out.println("object illegally created");
 		//} catch (Exception e) {
 		//	 System.out.println(e);
 		//}
 		
 		// create a non-binary illegally
-		// Human nbObj = new Nonbinary();
+		//Human nbObj = new Nonbinary();
 
 		// create a man illegally
-		// Human manObj = new Man();
+		//Human manObj = new Man();
 
 		// create a woman illegally
-		// Human womObj = new Woman();
+		//Human womObj = new Woman();
 
 	}
 

@@ -19,7 +19,7 @@ class Gameboard extends JPanel implements ActionListener {
     private JButton[] buttons = new JButton[3];
     private JButton lastPlayed; // remembers last chosen button/gesture
     private String[] texts = {"STEN", "PASE", "SAX"};
-    private JLabel upperMess;
+    protected JLabel upperMess;
 
 	protected JLabel lowerMess;
 
@@ -55,7 +55,7 @@ class Gameboard extends JPanel implements ActionListener {
     	    buttons[i].setIcon(icons[i]);
     	    buttons[i].setActionCommand(texts[i]);
     	    // buttons[i].addActionListener(listener);
-    	    buttons[i].addActionListener(this); // Ensure "this" is the ActionListener
+    	    buttons[i].addActionListener(this);
     	    add(buttons[i]);
     		// Store each button in a map with its text as key. 
             // Enables us to retrieve the button from a textvalue. 
@@ -83,7 +83,7 @@ class Gameboard extends JPanel implements ActionListener {
     }
 
 
-    // or use JButton as parameter
+    // use JButton as parameter
     void markPlayed(JButton b) {
         if (b != null) {
             if (lastPlayed != null) {
